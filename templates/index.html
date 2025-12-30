@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Asistente Virtual - Somos Trenes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+    
+    <div class="header">
+        <span class="material-icons menu-icon">menu</span>
+        <span class="logo-text">SOMOS TRENES</span>
+    </div>
+
+    <div class="chat-window" id="chat">
+        <div class="bot-welcome-container">
+            <img src="{{ url_for('static', filename='bot.png') }}" alt="Bot Asistente" class="bot-image">
+            <div class="msg bot">
+                ¡Hola! Soy tu asistente virtual de Trenes Argentinos. 🚂<br>
+                ¿En qué puedo ayudarte hoy?
+            </div>
+        </div>
+    </div>
+
+    <div class="options-container" id="options">
+        <button class="btn-option" onclick="irALicencias()">Adm. de Personal</button>
+        <button class="btn-option">Servicio Médico</button>
+        <button class="btn-option">Beneficios</button>
+    </div>
+
+    <div class="bottom-navbar">
+        <div class="nav-item active">
+            <span class="material-icons">home</span><span class="nav-label">Inicio</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-icons">person</span><span class="nav-label">Mis datos</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-icons">redeem</span><span class="nav-label">Beneficios</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-icons">badge</span><span class="nav-label">Credencial</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-icons">mail</span><span class="nav-label">Contacto</span>
+        </div>
+    </div>
+</div>
+
+<script>
+const chat = document.getElementById('chat');
+    const options = document.getElementById('options');
+
+    function addMsg(text, type) {
+        const div = document.createElement('div');
+        div.className = `msg ${type}`;
+        div.innerHTML = text;
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    function irALicencias() {
+        addMsg("Adm. de Personal", "user");
+        options.innerHTML = `<button class="btn-option" onclick="pedirLegajo()">Consulta de Saldo</button>
+                             <button class="btn-option btn-back" onclick="volver()">⬅️ Volver</button>`;
+        setTimeout(() => {
+            addMsg("Seleccionaste Adm. de Personal. ¿Qué querés hacer?", "bot");
+        }, 500);
+    }
+
+    function pedirLegajo() {
+        addMsg("Consulta de Saldo", "user");
+        addMsg("Por favor, ingresá tu número de legajo para consultar el sistema:", "bot");
+        
+        // Cambiamos los botones por un input de texto
+        options.innerHTML = `
+            <input type="number" id="legajoInput" placeholder="Ej: 10245" 
+                   style="flex: 1; padding: 12px; border-radius: 20px; border: 1px solid #ccc; margin-right: 10px;">
+            <button class="btn-option" onclick="enviarLegajo()" style="flex: 0;">Enviar</button>
+        `;
+    }
+
+    async function enviarLegajo() {
+        const legajo = document.getElementById('legajoInput').value;
+        if (!legajo) return alert("Ingresá un legajo");
+
+        addMsg(legajo, "user");
+        
+        const response = await fetch('/consultar', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({legajo: legajo})
+        });
+        const data = await response.json();
+        
+        addMsg(data.respuesta, "bot");
+        
+        // Volvemos a poner botones normales
+        options.innerHTML = `<button class="btn-option btn-back" onclick="volver()">⬅️ Volver al Inicio</button>`;
+    }
+
+    function volver() { location.reload(); }
+</script>
+
+</body>
+</html>
