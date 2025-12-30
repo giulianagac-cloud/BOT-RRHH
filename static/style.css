@@ -1,0 +1,113 @@
+/* --- Definición de Colores Institucionales --- */
+:root {
+    --primary-blue: #002B5C;   /* Azul oscuro del header y textos */
+    --accent-cyan: #00A3E0;    /* Celeste brillante para detalles */
+    --bg-light: #F4F4F4;       /* Fondo gris claro de la pantalla */
+    --bot-bubble: #E1F5FE;     /* Fondo celeste clarito para el bot */
+    --user-bubble: #FFFFFF;    /* Fondo blanco para el usuario */
+    --text-dark: #002B5C;      /* Color de texto principal */
+    --nav-inactive: #9E9E9E;   /* Gris para iconos inactivos */
+}
+
+/* Reseteo básico y fondo general */
+body {
+    margin: 0; padding: 0;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    background-color: #e0e0e0; /* Fondo gris fuera de la app */
+    display: flex; justify-content: center; height: 100vh;
+}
+
+/* --- Contenedor de la App --- */
+.app-container {
+    width: 100%; max-width: 414px; /* Tamaño de celular grande */
+    height: 100%; background-color: var(--bg-light);
+    display: flex; flex-direction: column; position: relative;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+}
+
+/* --- Header Azul --- */
+.header {
+    background-color: var(--primary-blue); color: white;
+    padding: 15px 20px; height: 60px; box-sizing: border-box;
+    display: flex; align-items: center;
+}
+.menu-icon { margin-right: 20px; cursor: pointer; }
+.logo-text { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.5px; }
+
+/* --- Ventana del Chat --- */
+.chat-window {
+    flex: 1; padding: 20px; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 15px;
+    /* Espacio para no quedar tapado por los botones y la barra inferior */
+    padding-bottom: 140px; 
+}
+
+/* Estilos para el Robotito de bienvenida */
+.bot-welcome-container {
+    display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;
+}
+.bot-image {
+    width: 140px; height: auto; margin-bottom: 10px;
+    /* Animación suave de flotación */
+    animation: float 3s ease-in-out infinite;
+}
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+/* --- Burbujas de Mensaje --- */
+.msg {
+    max-width: 85%; padding: 14px 18px; border-radius: 20px;
+    font-size: 0.95rem; line-height: 1.4; position: relative;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05); color: var(--text-dark);
+}
+.bot {
+    background-color: var(--bot-bubble); align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+.user {
+    background-color: var(--user-bubble); align-self: flex-end;
+    border-bottom-right-radius: 4px; border: 1px solid #e0e0e0;
+}
+
+/* Animación de "Escribiendo..." */
+.dot-flashing {
+  display: inline-block; width: 6px; height: 6px;
+  border-radius: 5px; background-color: var(--primary-blue); color: var(--primary-blue);
+  animation: dot-flashing 1s infinite linear alternate; margin-left: 10px; vertical-align: middle;
+}
+@keyframes dot-flashing { 
+    0% { background-color: var(--primary-blue); }
+    50%, 100% { background-color: #a3bffa; }
+}
+
+/* --- Botones de Opciones --- */
+.options-container {
+    position: absolute; bottom: 60px; /* Justo arriba de la barra de navegación */
+    width: 100%; padding: 15px 20px; box-sizing: border-box;
+    background-color: var(--bg-light); border-top: 1px solid #e0e0e0;
+    display: flex; flex-wrap: wrap; gap: 10px;
+}
+.btn-option {
+    background-color: var(--primary-blue); color: white;
+    border: none; padding: 14px 20px; border-radius: 30px;
+    font-size: 0.9rem; font-weight: 700; cursor: pointer;
+    flex-grow: 1; text-align: center; transition: all 0.2s;
+}
+.btn-option:hover { background-color: #004080; transform: translateY(-1px); }
+.btn-back {
+    background-color: transparent; color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+}
+.btn-back:hover { background-color: var(--primary-blue); color: white; }
+
+/* --- Barra de Navegación Inferior --- */
+.bottom-navbar {
+    position: absolute; bottom: 0; width: 100%; height: 60px;
+    background-color: white; border-top: 1px solid #e0e0e0;
+    display: flex; justify-content: space-around; align-items: center;
+}
+.nav-item {
+    display: flex; flex-direction: column; align-items: center;
+    color: var(--nav-inactive); font-size: 0.7rem;
+}
+.nav-item .material-icons { font-size: 24px; margin-bottom: 3px; }
+.nav-item.active { color: var(--primary-blue); }
